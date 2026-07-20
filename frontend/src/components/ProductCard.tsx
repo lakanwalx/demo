@@ -5,7 +5,8 @@ interface ProductCardProps {
   description: string;
   price: number;
   pictureURL: string;
-  onClickBuy: () => void;
+  onClickBuyWithPi: () => void;
+  onClickBuyWithIrra: () => void;
   disabled?: boolean;
 }
 
@@ -40,7 +41,36 @@ const priceSectionStyle: CSSProperties = {
   marginBottom: 8,
 };
 
-const ProductCard = ({ name, description, price, pictureURL, onClickBuy, disabled }: ProductCardProps) => {
+const paymentOptionStyle: CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: 4,
+};
+
+const paymentActionsStyle: CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: 12,
+  marginTop: 8,
+};
+
+const irraCaptionStyle: CSSProperties = {
+  margin: 0,
+  fontSize: 12,
+  color: "#666",
+};
+
+const ProductCard = ({
+  name,
+  description,
+  price,
+  pictureURL,
+  onClickBuyWithPi,
+  onClickBuyWithIrra,
+  disabled,
+}: ProductCardProps) => {
   return (
     <div style={containerStyle}>
       <div style={contentRowStyle}>
@@ -55,10 +85,21 @@ const ProductCard = ({ name, description, price, pictureURL, onClickBuy, disable
       </div>
 
       <div style={priceSectionStyle}>
-        <strong>{price} Test-π</strong> <br />
-        <button onClick={onClickBuy} disabled={disabled}>
-          Order
-        </button>
+        <div style={paymentActionsStyle}>
+          <div style={paymentOptionStyle}>
+            <strong>{price} Test-Pi</strong>
+            <button onClick={onClickBuyWithPi} disabled={disabled}>
+              Pay with Pi
+            </button>
+          </div>
+          <div style={paymentOptionStyle}>
+            <strong>{price} IRRA</strong>
+            <button onClick={onClickBuyWithIrra} disabled={disabled}>
+              Pay with IRRA
+            </button>
+            <p style={irraCaptionStyle}>IRRA prices don't follow actual price, it's set for demo purpose</p>
+          </div>
+        </div>
       </div>
     </div>
   );

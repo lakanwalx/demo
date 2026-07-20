@@ -11,6 +11,9 @@ type UsePaymentsArgs = {
   onRequireAuth: () => void;
 };
 
+export const IRRA_TOKEN_CANONICAL =
+  "IRRA:GAAKMEW7GM5364YRRXFVVMF52R4YEEHB7LUNYTX3OONXUJKPKZXB6OK3";
+
 export const usePayments = ({ isAuthenticated, onRequireAuth }: UsePaymentsArgs) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,7 +47,7 @@ export const usePayments = ({ isAuthenticated, onRequireAuth }: UsePaymentsArgs)
   }, []);
 
   const orderProduct = useCallback(
-    async (memo: string, amount: number, metadata: PaymentMetadata) => {
+    async (memo: string, amount: number, metadata: PaymentMetadata, tokenCanonical?: string) => {
       if (!isAuthenticated) {
         onRequireAuth();
         return;
@@ -53,7 +56,12 @@ export const usePayments = ({ isAuthenticated, onRequireAuth }: UsePaymentsArgs)
       setIsLoading(true);
       try {
         await window.Pi.createPayment(
-          { amount, memo, metadata },
+          {
+            amount,
+            memo,
+            metadata,
+            ...(tokenCanonical ? { tokenCanonical } : {}),
+          },
           {
             onReadyForServerApproval,
             onReadyForServerCompletion,
